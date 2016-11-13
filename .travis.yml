@@ -18,5 +18,4 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-  - cd ./artifacts
-  - nuget push *.nupkg $MYGET_KEY -Source https://www.myget.org/F/discord-net/api/v2/package
+  - nuget push ./artifacts/*.nupkg $MYGET_KEY -Source https://www.myget.org/F/discord-net/api/v2/package
