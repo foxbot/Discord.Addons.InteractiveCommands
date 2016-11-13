@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{875C861B-6C4C-402C-8DC0-8560701B919A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{13EE3B19-2FCA-4EE1-AF09-E58ABF396EA9}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Discord.Addons.InteractiveCommands", "src\Discord.Addons.InteractiveCommands\Discord.Addons.InteractiveCommands.xproj", "{562B8CC8-E2B7-42FE-A053-74F742B3E8AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{562B8CC8-E2B7-42FE-A053-74F742B3E8AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{562B8CC8-E2B7-42FE-A053-74F742B3E8AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{562B8CC8-E2B7-42FE-A053-74F742B3E8AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{562B8CC8-E2B7-42FE-A053-74F742B3E8AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{562B8CC8-E2B7-42FE-A053-74F742B3E8AA} = {875C861B-6C4C-402C-8DC0-8560701B919A}
+	EndGlobalSection
+EndGlobal
