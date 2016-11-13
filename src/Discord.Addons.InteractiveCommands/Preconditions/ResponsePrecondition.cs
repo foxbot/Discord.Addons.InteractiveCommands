@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace Discord.Addons.InteractiveCommands
 {
-    public class Class1
+    public abstract class ResponsePrecondition
     {
-        public Class1()
-        {
-        }
+        public abstract Task<ResponsePreconditionResult> CheckPermissions(ResponseContext context);
     }
 }
