@@ -11,14 +11,14 @@ matrix:
 install:
 - dotnet restore
 script:
-- dotnet pack src/Discord.Addons.InteractiveCommands --version-suffix $TRAVIS_BUILD_NUMBER
+- dotnet pack src/Discord.Addons.InteractiveCommands -c Release --version-suffix $TRAVIS_BUILD_NUMBER
   -o artifacts
 - dotnet build src/Example
 deploy:
   provider: script
   skip_cleanup: true
   script:
-  - nuget push -Source https://www.myget.org/F/discord-net/api/v2/package artifacts/*.nupkg $MYGET_API_KEY
+  - nuget push ./artifacts/*.nupkg -s https://www.myget.org/F/discord-net/api/v2/package $MYGET_API_KEY
 env:
   global:
     secure: ACPVWWWQiGq2+41G83iilh5enk9LwXXxMZN3rjJP+Ewp+q684r/iPBqih4BG83g/A/otChxMwkqv6FYWsV9GqAle6RyPd3OX7K+xoB/f2owY4/5vMeTmjBplumEOameva46WvKHvxUP+3nreqG66zEas9XXlEXPmh2AIdLV+T/Xh/DF0NSlmg2Dh74FEhsGC2fh0Q/1GQ8GIKqQ5cauJSRT60nUMe+p29TPic0ZOXPGvNmnUCgMERbnb45l2PMOm+PTknBSoCxjXLBg+/hNWfVW59MmYy/E5ZR+qFUnkXvq3j9isqQoCQirfVWgWU10MqXLTIKpKYW8HglZwSdmF7ELknNt1z2If7O1Oj5wTf/KAzJWPimYvQmDxgVFz8z4wnzZUG/MFmciwBVru1IDY2RI6C5fP5LBDBTaQoqIvzs5jvBTZw2TvMZsciTwnE2TO22Hwf9r5D1DillvmVnACDaQpMwH5XFKJzGGiKhJ8cdduDuJWD2/+QVPkgaqxBhvId36EDAqS41YRWvXqNojTCruAB2lHZXtRVbVvOAghE0Id9jYqmEYuhRZFyEYmY5ZilLEpsEZfA7IecSF4eMkW8kiMvigLFiJBQoizMM1Gq8vadKCYCYGh8UjeruO3Fb7HKI7tMhPV4vsk8iLUWZSsDadTfqgWywXswtCF/OzeRNs=
