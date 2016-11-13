@@ -10,12 +10,13 @@ matrix:
     env: DOTNETCORE=1
 install:
 - dotnet restore
+- mkdir artifacts
 script:
-- dotnet pack src/Discord.Addons.InteractiveCommands -c Release --version-suffix $TRAVIS_BUILD_NUMBER -o artifacts
+- dotnet pack src/Discord.Addons.InteractiveCommands -c Release --version-suffix $TRAVIS_BUILD_NUMBER -o ./artifacts
 - dotnet build src/Example
 deploy:
   provider: script
   skip_cleanup: true
   script:
-  - cd artifacts
+  - cd ./artifacts
   - nuget push *.nupkg $MYGET_KEY -Source https://www.myget.org/F/discord-net/api/v2/package
