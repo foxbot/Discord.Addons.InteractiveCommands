@@ -1,3 +1,4 @@
+#addin nuget:?package=NuGet.Core
 #addin "Cake.ExtendedNuGet"
 
 var MyGetKey = EnvironmentVariable("MYGET_KEY");
@@ -6,7 +7,13 @@ var BuildNumber = EnvironmentVariable("TRAVIS_BUILD_NUMBER");
 Task("Restore")
     .Does(() =>
 {
-    DotNetCoreRestore();
+    var settings = new DotNetCoreRestoreSettings
+    {
+        Sources = new[] { "https://www.myget.org/F/discord-net/api/v2", "https://www.nuget.org/api/v2" }
+    };
+    DotNetCoreRestore(settings);
+    DotNetCoreRestore("./src/Discord.Addons.InteractiveCommands/", settings);
+    DotNetCoreRestore("./src/Example/", settings);
 });
 Task("Build")
     .Does(() =>
@@ -17,8 +24,8 @@ Task("Build")
         OutputDirectory = "./artifacts/",
         VersionSuffix = BuildNumber
     };
-    DotNetCorePack("./src/Discord.Addons.InteractiveCommands", settings);
-    DotNetCoreBuild("./src/Example");
+    DotNetCorePack("./src/Discord.Addons.InteractiveCommands/", settings);
+    DotNetCoreBuild("./src/Example/");
 });
 Task("Deploy")
     .Does(() =>
