@@ -1,21 +1,10 @@
 language: csharp
-solution: Discord.Addons.InteractiveCommands.sln
 matrix:
   include:
   - os: linux
     dist: trusty
     sudo: required
-    dotnet: 1.0.0-preview2-003131
-    mono: latest
+    dotnet: 1.0.0-preview3-004056
     env: DOTNETCORE=1
-install:
-- dotnet restore
-- mkdir artifacts
 script:
-- dotnet pack src/Discord.Addons.InteractiveCommands -c Release --version-suffix $TRAVIS_BUILD_NUMBER -o ./artifacts
-- dotnet build src/Example
-deploy:
-  provider: script
-  skip_cleanup: true
-  script:
-  - nuget push ./artifacts/*.nupkg $MYGET_KEY -Source https://www.myget.org/F/discord-net/api/v2/package
+- ./build.sh
