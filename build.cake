@@ -12,8 +12,6 @@ Task("Restore")
         Sources = new[] { "https://www.myget.org/F/discord-net/api/v2", "https://www.nuget.org/api/v2" }
     };
     DotNetCoreRestore(settings);
-    DotNetCoreRestore("./src/Discord.Addons.InteractiveCommands/", settings);
-    DotNetCoreRestore("./src/Example/", settings);
 });
 Task("Build")
     .Does(() =>
@@ -33,7 +31,7 @@ Task("Deploy")
     var settings = new NuGetPushSettings
     {
         Source = "https://www.myget.org/F/discord-net/api/v2/package",
-        ApiKey = "99291d2b-b3e0-42e7-8a49-aaf611d586b1"
+        ApiKey = MyGetKey
     };
     var packages = GetFiles("./artifacts/*.nupkg");
     NuGetPush(packages, settings);
