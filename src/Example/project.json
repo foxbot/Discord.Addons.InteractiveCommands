@@ -11,7 +11,7 @@
     },
     "Discord.Net.WebSocket": "1.0.0-beta2-*",
     "Discord.Net.Commands": "1.0.0-beta2-*",
-    "Discord.Addons.InteractiveCommands": "1.0.0-*"
+    "Discord.Addons.InteractiveCommands": "1.0.0-rc-*"
   },
 
   "frameworks": {
