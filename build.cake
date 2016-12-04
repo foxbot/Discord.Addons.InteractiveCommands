@@ -2,7 +2,7 @@
 #addin "Cake.ExtendedNuGet"
 
 var MyGetKey = EnvironmentVariable("MYGET_KEY");
-var BuildNumber = EnvironmentVariable("TRAVIS_BUILD_NUMBER");
+string BuildNumber = EnvironmentVariable("TRAVIS_BUILD_NUMBER");
 
 Task("Restore")
     .Does(() =>
@@ -16,11 +16,12 @@ Task("Restore")
 Task("Build")
     .Does(() =>
 {
+    var suffix = BuildNumber.PadLeft(5,'0');
     var settings = new DotNetCorePackSettings
     {
         Configuration = "Release",
         OutputDirectory = "./artifacts/",
-        VersionSuffix = BuildNumber
+        VersionSuffix = suffix
     };
     DotNetCorePack("./src/Discord.Addons.InteractiveCommands/", settings);
     DotNetCoreBuild("./src/Example/");
