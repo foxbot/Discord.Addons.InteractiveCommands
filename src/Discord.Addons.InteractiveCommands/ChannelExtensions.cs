@@ -9,7 +9,7 @@ namespace Discord.Addons.InteractiveCommands
     {
         // thanks discord.py
         /// <inheritdoc />
-        /// <param name="deleteAfter">The time (in secojnds) to wait before deleting the message.</param>
+        /// <param name="deleteAfter">The time (in seconds) to wait before deleting the message.</param>
         public static async Task<IUserMessage> SendMessageAsync(this IMessageChannel channel, 
             string text,
             bool isTTS = false,

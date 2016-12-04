@@ -6,6 +6,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Reflection;
+using Discord.Addons.InteractiveCommands;
 
 namespace Example
 {
@@ -23,6 +24,7 @@ namespace Example
 
             _map = map;
             _client = map.Get<DiscordSocketClient>();
+            _map.Add(new InteractiveService(_client));
 
             _client.MessageReceived += HandleCommand;
         }

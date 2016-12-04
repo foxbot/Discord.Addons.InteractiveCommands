@@ -20,40 +20,16 @@ namespace Discord.Addons.InteractiveCommands
         /// <param name="preconditions">Any preconditions to run to determine if a response is valid.</param>
         /// <returns>The response.</returns>
         /// <remarks>When you use this in a command, the command's RunMode MUST be set to 'async'. Otherwise, the gateway thread will be blocked, and this will never return.</remarks>
-        /// <exception cref="NotSupportedException">This addon must be ran with a DiscordSocketClient.</exception>
         public async Task<IUserMessage> WaitForMessage(IUser user, IMessageChannel channel = null, TimeSpan? timeout = null, params ResponsePrecondition[] preconditions)
         {
             var client = Context.Client as DiscordSocketClient;
             if (client == null) throw new NotSupportedException("This addon must be ran with a DiscordSocketClient.");
-            if (timeout == null) timeout = TimeSpan.FromSeconds(15);
+            return await new InteractiveService(client).WaitForMessage(user, channel, timeout, preconditions);
+        }
 
-            var block = new SemaphoreSlim(0, 1);
-            IUserMessage response = null;
-
-            Func<IMessage, Task> isValid = async (messageParameter) =>
-            {
-                var message = messageParameter as IUserMessage;
-                if (message == null) return;
-                if (message.Author.Id != user.Id) return;
-                if (channel != null && message.Channel != channel) return;
-
-                var context = new ResponseContext(client, message);
-
-                foreach (var precondition in preconditions)
-                {
-                    var result = await precondition.CheckPermissions(context);
-                    if (!result.IsSuccess) return;
-                }
-
-                response = message;
-                block.Release();
-            };
-
-            client.MessageReceived += isValid;
-            await block.WaitAsync();
-            client.MessageReceived -= isValid;
-
-            return response;
+        protected virtual Task<IUserMessage> ReplyAsync(string message, bool isTTS = false, EmbedBuilder embed = null, int deleteAfter = 5, RequestOptions options = null)
+        {
+            return Context.Channel.SendMessageAsync(message, isTTS, embed, deleteAfter, options);
         }
     }
 }

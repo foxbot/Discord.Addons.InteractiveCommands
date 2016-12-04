@@ -26,5 +26,11 @@ namespace Example.Modules.Test
             var response = await WaitForMessage(Context.Message.Author, Context.Channel, null, new MessageContainsResponsePrecondition("dog", "cat", "giraffe"));
             await ReplyAsync($"Your favorite animal is a {response.Content}!");
         }
+
+        [Command("destroy")]
+        public async Task DeleteAfter()
+        {
+            await ReplyAsync("This message will destroy itself in 5 seconds", deleteAfter: 5);
+        }
     }
 }
