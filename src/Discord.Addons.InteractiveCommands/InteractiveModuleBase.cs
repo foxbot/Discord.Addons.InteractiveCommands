@@ -9,7 +9,8 @@ using System.Threading;
 
 namespace Discord.Addons.InteractiveCommands
 {
-    public class InteractiveModuleBase : ModuleBase
+    public abstract class InteractiveModuleBase : InteractiveModuleBase<CommandContext> { }
+    public abstract class InteractiveModuleBase<T> : ModuleBase<T> where T : class, ICommandContext
     {
         /// <summary>
         /// Waits for the user to send a message.
