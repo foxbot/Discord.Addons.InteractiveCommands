@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1-ci-*",
+  "version": "1.1.2-ci-*",
   "packOptions": {
     "owners": [ "foxbot" ],
     "repository": {
@@ -14,8 +14,8 @@
 
   "dependencies": {
     "NETStandard.Library": "1.6.0",
-    "Discord.Net.WebSocket": "1.0.0-beta2-*",
-    "Discord.Net.Commands": "1.0.0-beta2-*"
+    "Discord.Net.WebSocket": "1.0.0-rc-*",
+    "Discord.Net.Commands": "1.0.0-rc-*"
   },
 
   "frameworks": {
