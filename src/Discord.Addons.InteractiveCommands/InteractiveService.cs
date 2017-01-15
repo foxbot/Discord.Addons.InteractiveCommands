@@ -16,6 +16,14 @@ namespace Discord.Addons.InteractiveCommands
             _client = client;
         }
 
+        /// <summary>
+        /// Waits for a message to be sent by the user.
+        /// </summary>
+        /// <param name="user">The user to await a message from.</param>
+        /// <param name="channel">Optional channel that this message must be sent in.</param>
+        /// <param name="timeout">How long to wait for a message? Use TimeSpan.Zero for infinite timeout.</param>
+        /// <param name="preconditions">A list of ResponsePreconditions to constrain the response to.</param>
+        /// <returns>The message that the user sends.</returns>
         public async Task<IUserMessage> WaitForMessage(IUser user, IMessageChannel channel = null, TimeSpan? timeout = null, params ResponsePrecondition[] preconditions)
         {
             if (timeout == null) timeout = TimeSpan.FromSeconds(15);
@@ -45,7 +53,10 @@ namespace Discord.Addons.InteractiveCommands
             _client.MessageReceived += isValid;
             try
             {
-                await Task.Delay(timeout.Value, blockToken.Token);
+                if (timeout == TimeSpan.Zero)
+                    await Task.Delay(-1, blockToken.Token);
+                else
+                    await Task.Delay(timeout.Value, blockToken.Token);
             }
             catch (TaskCanceledException)
             {
