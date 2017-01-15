@@ -28,7 +28,7 @@ namespace Discord.Addons.InteractiveCommands
             return await new InteractiveService(client).WaitForMessage(user, channel, timeout, preconditions);
         }
 
-        protected virtual Task<IUserMessage> ReplyAsync(string message, bool isTTS = false, EmbedBuilder embed = null, int deleteAfter = 5, RequestOptions options = null)
+        protected virtual Task<IUserMessage> ReplyAsync(string message, bool isTTS = false, EmbedBuilder embed = null, uint deleteAfter = 0, RequestOptions options = null)
         {
             return Context.Channel.SendMessageAsync(message, isTTS, embed, deleteAfter, options);
         }

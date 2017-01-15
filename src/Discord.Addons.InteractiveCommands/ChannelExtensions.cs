@@ -14,14 +14,17 @@ namespace Discord.Addons.InteractiveCommands
             string text,
             bool isTTS = false,
             EmbedBuilder embed = null,
-            int deleteAfter = 5,
+            uint deleteAfter = 0,
             RequestOptions options = null)
         {
             var message = await channel.SendMessageAsync(text, isTTS, embed, options);
-            var _ = Task.Run(() => DeleteAfterAsync(message, deleteAfter));
+            if (deleteAfter > 0)
+            {
+                var _ = Task.Run(() => DeleteAfterAsync(message, deleteAfter));
+            }
             return message;
         }
-        private static async Task DeleteAfterAsync(IUserMessage message, int deleteAfter)
+        private static async Task DeleteAfterAsync(IUserMessage message, uint deleteAfter)
         {
             await Task.Delay(TimeSpan.FromSeconds(deleteAfter));
             await message.DeleteAsync();
