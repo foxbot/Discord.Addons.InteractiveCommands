@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Discord.Addons.ReactionCallbacks
+namespace Discord.Addons.InteractiveCommands
 {
     public class ReactionCallback
     {
