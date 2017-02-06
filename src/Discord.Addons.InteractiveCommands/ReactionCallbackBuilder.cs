@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Discord.WebSocket;
 using System.Threading;
 
-namespace Discord.Addons.ReactionCallbacks
+namespace Discord.Addons.InteractiveCommands
 {
     public class ReactionCallbackBuilder
     {
