@@ -7,6 +7,6 @@ namespace Discord.Addons.InteractiveCommands
     {
         public bool ResumeAfterExecution { get; set; }
 
-        public Func<IUser, Task> Callback { get; set; }
+        public Func<IUser, Task> Function { get; set; }
     }
 }
