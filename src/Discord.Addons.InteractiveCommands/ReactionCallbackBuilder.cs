@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord.WebSocket;
@@ -13,6 +13,8 @@ namespace Discord.Addons.InteractiveCommands
         public string[] Reactions { get; set; } = Array.Empty<string>();
 
         public Func<IUser, Task<bool>> Precondition { get; set; }
+
+        public int Timeout { get; set; } = 60000;
 
         public Dictionary<string, ReactionCallback> Callbacks { get; set; } = new Dictionary<string, ReactionCallback>();
 
@@ -44,6 +46,12 @@ namespace Discord.Addons.InteractiveCommands
             return this;
         }
 
+        public ReactionCallbackBuilder WithTimeout(int ms)
+        {
+            Timeout = ms;
+            return this;
+        }
+
         /// <summary>
         /// Sets a preconditon on which the callbacks will be executed.
         /// </summary>
@@ -61,7 +69,7 @@ namespace Discord.Addons.InteractiveCommands
         /// <param name="resumeAfterExecution">If it should execute further callbacks after this callback has been executed.</param>
         public ReactionCallbackBuilder AddCallback(string emoji, Func<IUser, Task> callback, bool resumeAfterExecution = false)
         {
-            Callbacks.Add(emoji, new ReactionCallback { Callback = callback, ResumeAfterExecution = resumeAfterExecution });
+            Callbacks.Add(emoji, new ReactionCallback { Function = callback, ResumeAfterExecution = resumeAfterExecution });
             return this;
         }
 
@@ -73,7 +81,7 @@ namespace Discord.Addons.InteractiveCommands
         /// <param name="resumeAfterExecution">If it should execute further callbacks after this callback has been executed.</param>
         public ReactionCallbackBuilder AddCallback(string emoji, Action<IUser> callback, bool resumeAfterExecution = false)
         {
-            Callbacks.Add(emoji, new ReactionCallback { Callback = x => { callback(x); return Task.CompletedTask; }, ResumeAfterExecution = resumeAfterExecution });
+            Callbacks.Add(emoji, new ReactionCallback { Function = x => { callback(x); return Task.CompletedTask; }, ResumeAfterExecution = resumeAfterExecution });
             return this;
         }
 
@@ -96,9 +104,7 @@ namespace Discord.Addons.InteractiveCommands
         {
             DiscordSocketClient socketClient;
             if (message.Channel is IGuildChannel guildChannel)
-            {
                 socketClient = client.GetShardFor(guildChannel.Guild);
-            }
             else socketClient = client.GetShard(0); //shard for DMs
             return ExecuteAsync(socketClient, message);
         }
@@ -113,19 +119,16 @@ namespace Discord.Addons.InteractiveCommands
                 if (id != message.Id || !reaction.User.IsSpecified || reaction.UserId == client.CurrentUser.Id)
                     return;
                 var emoji = reaction.Emoji;
-                //will be simplified when the Emoji overload works properly
-                var emojiString = emoji.Id == null ? emoji.Name : $"{emoji.Name}:{emoji.Id}";
+                string emojiString = emoji.Id == null ? emoji.Name : $"{emoji.Name}:{emoji.Id}";
                 var user = reaction.User.Value;
-                if (!Callbacks.TryGetValue(emojiString, out var callback)
-                    || (Precondition != null && !await Precondition(user)))
-                {
-                    var _ = message.RemoveReactionAsync(emojiString, user);
+                if (!Callbacks.TryGetValue(emojiString, out var callback))
                     return;
-                }
-                timeoutDate = DateTime.UtcNow.AddMinutes(1);
+                if (Precondition != null && !await Precondition(user))
+                    return;
+                timeoutDate = DateTime.UtcNow.AddMilliseconds(Timeout);
                 try
                 {
-                    await callback.Callback(reaction.User.Value);
+                    await callback.Function(reaction.User.Value);
                 }
                 catch
                 {
@@ -138,7 +141,7 @@ namespace Discord.Addons.InteractiveCommands
                     tokenSource.Cancel(true);
             };
             client.ReactionAdded += func;
-            foreach (var emoji in Reactions)
+            foreach (string emoji in Reactions)
                 await message.AddReactionAsync(emoji);
             do
             {
