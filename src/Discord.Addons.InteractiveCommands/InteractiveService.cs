@@ -62,6 +62,10 @@ namespace Discord.Addons.InteractiveCommands
             {
                 return response;
             }
+            catch
+            {
+                throw;
+            }
             finally
             {
                 _client.MessageReceived -= isValid;
