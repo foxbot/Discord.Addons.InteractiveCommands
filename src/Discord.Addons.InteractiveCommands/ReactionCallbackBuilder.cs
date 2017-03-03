@@ -114,9 +114,9 @@ namespace Discord.Addons.InteractiveCommands
             var tokenSource = new CancellationTokenSource();
             var timeoutDate = DateTime.UtcNow.AddMinutes(1);
             bool isFinished = false;
-            Func<ulong, Optional<SocketUserMessage>, SocketReaction, Task> func = async (id, messageParam, reaction) =>
+            Func<Cacheable<IUserMessage, ulong>, ISocketMessageChannel, SocketReaction, Task> func = async (msg, channel, reaction) =>
             {
-                if (id != message.Id || !reaction.User.IsSpecified || reaction.UserId == client.CurrentUser.Id)
+                if (msg.Id != message.Id || !reaction.User.IsSpecified || reaction.UserId == client.CurrentUser.Id)
                     return;
                 var emoji = reaction.Emoji;
                 string emojiString = emoji.Id == null ? emoji.Name : $"{emoji.Name}:{emoji.Id}";
