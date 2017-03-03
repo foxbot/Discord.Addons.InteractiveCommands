@@ -112,7 +112,7 @@ namespace Discord.Addons.InteractiveCommands
         private async Task ExecuteAsync(DiscordSocketClient client, IUserMessage message)
         {
             var tokenSource = new CancellationTokenSource();
-            var timeoutDate = DateTime.UtcNow.AddMinutes(1);
+            var timeoutDate = DateTime.UtcNow.AddMilliseconds(Timeout);
             bool isFinished = false;
             Func<Cacheable<IUserMessage, ulong>, ISocketMessageChannel, SocketReaction, Task> func = async (msg, channel, reaction) =>
             {
