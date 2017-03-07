@@ -1,3 +1,6 @@
+### New in 1.2.1 (Released 2017/03/07)
+* Fixed example bot from compiling due to duplicate assembly info
+
 ### New in 1.2.0 (Released 2017/03/07)
 
 * Added Reaction Callbacks
