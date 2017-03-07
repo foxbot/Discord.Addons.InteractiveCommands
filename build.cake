@@ -3,6 +3,8 @@
 
 var MyGetKey = EnvironmentVariable("MYGET_KEY");
 string BuildNumber = EnvironmentVariable("TRAVIS_BUILD_NUMBER");
+string Branch = EnvironmentVariable("TRAVIS_BRANCH");
+ReleaseNotes Notes = null;
 
 Task("Restore")
     .Does(() =>
@@ -13,20 +15,32 @@ Task("Restore")
     };
     DotNetCoreRestore(settings);
 });
-Task("Build")
+Task("ReleaseNotes")
     .Does(() =>
 {
-    var suffix = BuildNumber.PadLeft(5,'0');
+    Notes = ParseReleaseNotes("./ReleaseNotes.md");
+    Information("Release Version: {0}", Notes.Version);
+});
+Task("Build")
+    .IsDependentOn("ReleaseNotes")
+    .Does(() =>
+{
+    var suffix = BuildNumber != null ? BuildNumber.PadLeft(5,'0') : "";
     var settings = new DotNetCorePackSettings
     {
         Configuration = "Release",
         OutputDirectory = "./artifacts/",
-        VersionSuffix = suffix
+        EnvironmentVariables = new Dictionary<string, string> {
+            { "BuildVersion", Notes.Version.ToString() },
+            { "BuildNumber", suffix },
+            { "ReleaseNotes", string.Join("\n", Notes.Notes) },
+        },
     };
     DotNetCorePack("./src/Discord.Addons.InteractiveCommands/", settings);
     DotNetCoreBuild("./src/Example/");
 });
 Task("Deploy")
+    .WithCriteria(Branch == "master")
     .Does(() =>
 {
     var settings = new NuGetPushSettings
