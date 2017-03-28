@@ -20,7 +20,6 @@ namespace Example
         {
             _commands = new CommandService();
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
-            map.Add(_commands);
 
             _map = map;
             _client = map.Get<DiscordSocketClient>();

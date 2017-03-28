@@ -1,3 +1,7 @@
+### New in 1.2.2 (Released 2017/03/27)
+* Example bot should now run out of box (dependency map changes)
+* Bumped version to rc-652
+
 ### New in 1.2.1 (Released 2017/03/07)
 * Fixed example bot from compiling due to duplicate assembly info
 
