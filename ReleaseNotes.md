@@ -1,3 +1,6 @@
+### New in 1.2.3 (Released 2017/05/12)
+* Updated to Discord.Net RC3
+
 ### New in 1.2.2 (Released 2017/03/27)
 * Example bot should now run out of box (dependency map changes)
 * Bumped version to rc-652

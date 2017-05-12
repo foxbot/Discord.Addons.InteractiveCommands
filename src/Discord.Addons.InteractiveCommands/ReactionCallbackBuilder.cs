@@ -1,8 +1,8 @@
+using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Discord.WebSocket;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Discord.Addons.InteractiveCommands
 {
@@ -118,8 +118,8 @@ namespace Discord.Addons.InteractiveCommands
             {
                 if (msg.Id != message.Id || !reaction.User.IsSpecified || reaction.UserId == client.CurrentUser.Id)
                     return;
-                var emoji = reaction.Emoji;
-                string emojiString = emoji.Id == null ? emoji.Name : $"{emoji.Name}:{emoji.Id}";
+                var emoji = reaction.Emote;
+                string emojiString = emoji is Emote emote ? $"{emote.Name}:{emote.Id}" : emoji.Name;
                 var user = reaction.User.Value;
                 if (!Callbacks.TryGetValue(emojiString, out var callback))
                     return;
@@ -136,13 +136,13 @@ namespace Discord.Addons.InteractiveCommands
                     return;
                 }
                 if (callback.ResumeAfterExecution)
-                    await message.RemoveReactionAsync(emojiString, user);
+                    await message.RemoveReactionAsync(emoji, user);
                 else
                     tokenSource.Cancel(true);
             };
             client.ReactionAdded += func;
             foreach (string emoji in Reactions)
-                await message.AddReactionAsync(emoji);
+                await message.AddReactionAsync(new Emoji(emoji));
             do
             {
                 try
