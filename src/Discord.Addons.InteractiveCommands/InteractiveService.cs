@@ -36,7 +36,7 @@ namespace Discord.Addons.InteractiveCommands
                 var message = messageParameter as IUserMessage;
                 if (message == null) return;
                 if (message.Author.Id != user.Id) return;
-                if (channel != null && message.Channel != channel) return;
+                if (channel != null && message.Channel.Id != channel.Id) return;
 
                 var context = new ResponseContext(_client, message);
 
