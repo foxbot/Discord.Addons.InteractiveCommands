@@ -1,3 +1,6 @@
+### New in 1.2.4 (Released 2017/06/14)
+* [GH-4] Fix channel filtering - genyx
+
 ### New in 1.2.3 (Released 2017/05/12)
 * Updated to Discord.Net RC3
 
